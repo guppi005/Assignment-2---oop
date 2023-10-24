@@ -36,10 +36,24 @@ class Alchemist:
 
 
 class Laboratory:
-    def __init__(self, potions):
-        self.__potions = potions   #coming in as a list
+    def __init__(self, potions, herbs, catalysts):
+        self.__potions = potions  #coming in as a list
+        self.__herbs = herbs
+        self.__catalysts = catalysts
 
     def mixPotion(self, name, type, stat, primaryIngredient, secondaryIngredient):
+        pass
+
+    def addReagent(self, reagent, amount):
+        pass
+
+    def grabReagent(self, name):
+        pass
+
+    def cleanHerbs(self):
+        pass
+
+    def refineCatalysts(self):
         pass
         
 

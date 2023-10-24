@@ -53,7 +53,7 @@ class Alchemist:
         return self.__recipes
 
     def mixPotion(self, recipe):
-        pass
+        self.__recipe = recipe
     
     def drinkPotion(self, potion):
         
