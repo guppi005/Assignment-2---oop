@@ -58,27 +58,102 @@ class Laboratory:
         
 
 class Potion(ABC):
+    def __init__(self, name, stat, boost):
+        self.__name = name
+        self.__stat = stat
+        self.__boost = boost
     
     @abstractmethod
     def calculatedBoost():
         pass
 
-class SuperPotion(Potion):
-    def __init__(self, herb):
-        self.herb = herb
+    def getName(self):
+        pass
 
+    def getStat(self):
+        pass
+
+    def getBoost(self):
+        pass
+
+    def setBoost(self, boost):
+        self.__boost = boost
+
+
+class SuperPotion(Potion):
+    def __init__(self, herb, catalyst, name, stat, boost):
+        super().__init(name, stat, boost)
+        self.__herb = herb
+        self.__catalyst = catalyst
+
+    def getHerb(self):
+        pass
+    
     def getHerb(self):
         return self.herb   #same catalyst
     
+    def getCatalyst(self):
+        pass
+    
 
-class Reagent:
-    def __init__(self):
+class ExtremePotion(Potion):
+    def __init__(self, reagent, potion, name, stat, boost);
+        super().__init(name, stat, boost)
+    def calculateBoost(self):
+        pass
+
+    def getReagent(self):
+        pass
+
+    def getPotion(self):
         pass
 
 
+
+class Reagent(ABC):
+    def __init__(self, name potency):
+        super().__init(name, potency)
+        self.__name = name
+
+    @abstractmethod
+    def refine(self):
+        pass
+
+    def getName(self):
+        pass
+
+    def getPotency(self):
+        pass
+
+    def setPotency(self, boost):
+        self.__boost = boost
+
+
 class Herb(Reagent):
-    def __init__(self):
+    def __init__(self, name, potency):
+        super().__init(name, potency)
         self.__grimy = True
+
+    def refine(self):
+        pass
+
+    def getGrimy(self):
+        pass
+
+    def setGrimy(self, grimy):
+        pass
+
+class Catalyst(Reagent):
+    def __init__(self, quality, name, potency):
+        super().__init(name, potency)
+
+
+
+    def refine(self):
+        pass
+
+    def getQuality(self):
+        pass
 
 
 
