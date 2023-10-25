@@ -22,16 +22,35 @@ display_details()
 
 
 from abc import ABC, abstractmethod
+
+
 class Alchemist:
-    def __init__(self, attack, potions):
-        self.attack = attack
-        self.recipes = {}
-        self.laboratory = Laboratory(potions, herbs, catalysts) #composition
+    def __init__(self, attack, strength, defense, magic, ranged, necromancy, laboratory, recipes, potions, herbs, catalysts):
+        self.__attack = attack
+        self.__strength = strength
+        self.__defense = defense
+        self.__magic = magic
+        self.__ranged = ranged
+        self.__necromancy = necromancy
+        self.__laboratory = Laboratory(potions, herbs, catalysts) #composition     #private or public?
+        self.__recipes = recipes
 
     def getLaboratory(self):
-        pass
+        return self.__laboratory
+
+    def getRecipes(self):
+        return self.__recipes
 
     def mixPotion(self, recipe):
+        self.__recipe = recipe
+    
+    def drinkPotion(self, potion):
+        pass
+
+    def collectReagent(self, reagent, amount):
+        pass
+
+    def refineReagents(self):
         pass
 
 
@@ -111,9 +130,9 @@ class ExtremePotion(Potion):
 
 
 class Reagent(ABC):
-    def __init__(self, name potency):
-        super().__init(name, potency)
+    def __init__(self, name, potency):
         self.__name = name
+        self.__potency = potency
 
     @abstractmethod
     def refine(self):
@@ -134,6 +153,7 @@ class Herb(Reagent):
         super().__init(name, potency)
         self.__grimy = True
 
+
     def refine(self):
         pass
 
@@ -146,7 +166,7 @@ class Herb(Reagent):
 class Catalyst(Reagent):
     def __init__(self, quality, name, potency):
         super().__init(name, potency)
-
+        self.__quality = quality
 
 
     def refine(self):
