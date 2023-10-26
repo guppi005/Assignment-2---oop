@@ -29,11 +29,11 @@ class Alchemist:
         self.__attack = attack
         self.__strength = strength
         self.__defense = defense
-        self.__magic = magic
+        self.__magic = magic    #0
         self.__ranged = ranged
         self.__necromancy = necromancy
-        self.__laboratory = Laboratory(potions, herbs, catalysts) #composition     #private or public?
-        self.__recipes = recipes
+        self.__laboratory = Laboratory(potions, herbs, catalysts) #composition     #private or public?   #None
+        self.__recipes = recipes #{}
 
     def getLaboratory(self):
         return self.__laboratory
@@ -43,12 +43,14 @@ class Alchemist:
 
     def mixPotion(self, recipe):
         self.__recipe = recipe
+        self.__laboratory.mixPotion(potionName, primaryIngredient, secondaryIngredient)
     
     def drinkPotion(self, potion):
         pass
 
     def collectReagent(self, reagent, amount):
-        pass
+        if self.__laboratory:
+            self.__laboratory.addReagent(reagent)
 
     def refineReagents(self):
         pass
@@ -59,12 +61,28 @@ class Laboratory:
         self.__potions = potions  #coming in as a list
         self.__herbs = herbs
         self.__catalysts = catalysts
+        self.__reagent = 0
 
     def mixPotion(self, name, type, stat, primaryIngredient, secondaryIngredient):
-        pass
+        if type == "Super":
+            potion = SuperPotion(primaryIngredient, secondaryIngredient, name, stat)  #mixing ingredients to create super potion ##herb, catalyst
+            self.__potions.append(potion)
+
+        elif type == "Extreme":
+            potion = ExtremePotion(primaryIngredient, secondaryIngredient, name, stat)    ##catalyst, other potion
+            self.__potions.append(potion) #add potion to potion lift
 
     def addReagent(self, reagent, amount):
-        pass
+        if isinstance(reagent, Herb):
+            for i in range(amount):                #loop for herbs being added amount num of times
+                self.__herbs.append(reagent)
+                print(f"")
+
+        elif isinstance(reagent, Catalyst):
+            for i in range(amount):        #loop for catalysts being added amount num of times
+                self.__catalysts.append(reagent)
+                print(f"")  ###########
+        print(f"Total number of reagents {len(self.__herbs)} + {len(self.__catalysts)}")
 
     def grabReagent(self, name):
         pass
@@ -77,22 +95,22 @@ class Laboratory:
         
 
 class Potion(ABC):
-    def __init__(self, name, stat, boost):
+    def __init__(self, name, stat):
         self.__name = name
         self.__stat = stat
-        self.__boost = boost
+        self.__boost = 0
     
     @abstractmethod
     def calculatedBoost():
         pass
 
-    def getName(self):
+    def getName(self):   #return
         pass
 
     def getStat(self):
         pass
 
-    def getBoost(self):
+    def getBoost(self): #return
         pass
 
     def setBoost(self, boost):
@@ -100,26 +118,30 @@ class Potion(ABC):
 
 
 class SuperPotion(Potion):
-    def __init__(self, herb, catalyst, name, stat, boost):
-        super().__init(name, stat, boost)
+    def __init__(self, herb, catalyst, name, stat):
+        super().__init(name, stat)
         self.__herb = herb
         self.__catalyst = catalyst
 
-    def getHerb(self):
-        pass
+    def calculateBoost(self):
+        value = self.__herb.getPotency() + (self.__catalyst.getQuality() * self.__catalyst.getPotency()) * 1.5
+        return round(value, 2)   #calculate boost
     
     def getHerb(self):
-        return self.herb   #same catalyst
+        return self.__herb   #same catalyst
     
-    def getCatalyst(self):
-        pass
+    def getCatalyst(self): 
+        return self.__catalyst
     
 
 class ExtremePotion(Potion):
-    def __init__(self, reagent, potion, name, stat, boost);
-        super().__init(name, stat, boost)
+    def __init__(self, reagent, potion, name, stat):
+        super().__init(name, stat)
+        self.__reagent = reagent #catalyst
+        self.__potion = potion  
+
     def calculateBoost(self):
-        pass
+        pass               ##3
 
     def getReagent(self):
         pass
@@ -141,7 +163,7 @@ class Reagent(ABC):
     def getName(self):
         pass
 
-    def getPotency(self):
+    def getPotency(self): #return
         pass
 
     def setPotency(self, boost):
@@ -153,27 +175,39 @@ class Herb(Reagent):
         super().__init(name, potency)
         self.__grimy = True
 
-
     def refine(self):
-        pass
+        self.setGrimy(False) #herb class method call. refining leads to a herb that is not grimy
+
+        self.setPotency(self.getPotency * 2.5)
+        print(f"Cleaned. Potency increased to {self.getPotency()}") #
 
     def getGrimy(self):
-        pass
+        return self.__grimy
 
     def setGrimy(self, grimy):
-        pass
+        self.__grimy = grimy
+
+   
+
 
 class Catalyst(Reagent):
     def __init__(self, quality, name, potency):
         super().__init(name, potency)
         self.__quality = quality
 
-
     def refine(self):
-        pass
+        if self.quality < 8.9:
+            self.quality += 1.1
+            print(f"Quality is {self.quality}")
+
+        else:
+            self.quality = 10 
+            print(f"The quality is {self.quality}. Catalyst cannot be refined any further")
 
     def getQuality(self):
-        pass
+        return self.quality
+
+    
 
 
 
