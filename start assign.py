@@ -50,10 +50,18 @@ class Alchemist:
 
     def collectReagent(self, reagent, amount):
         if self.__laboratory:
-            self.__laboratory.addReagent(reagent)
+            self.__laboratory.addReagent(reagent, amount)
+
+        else:
+            print("Alchemist has no laboratory to collect reagents")
 
     def refineReagents(self):
-        pass
+        if self.__laboratory:
+            self.__laboratory.refineCatalysts()
+            self.__laboratory.cleanHerbs()
+        
+        else: 
+            print("Alchemist has no laboratory to refine reagents")
 
 
 class Laboratory:
@@ -102,16 +110,16 @@ class Potion(ABC):
     
     @abstractmethod
     def calculatedBoost():
-        pass
+        pass  #return round(self.boost, 2)
 
-    def getName(self):   #return
-        pass
+    def getName(self):  
+        return self.__name
 
     def getStat(self):
-        pass
+        return self.__stat
 
-    def getBoost(self): #return
-        pass
+    def getBoost(self): 
+        return self.__boost
 
     def setBoost(self, boost):
         self.__boost = boost
@@ -141,13 +149,13 @@ class ExtremePotion(Potion):
         self.__potion = potion  
 
     def calculateBoost(self):
-        pass               ##3
+        return self.__boost
 
     def getReagent(self):
-        pass
+        return self.__reagent
 
     def getPotion(self):
-        pass
+        return self.__potion
 
 
 
@@ -161,12 +169,12 @@ class Reagent(ABC):
         pass
 
     def getName(self):
-        pass
+        return self.__name
 
-    def getPotency(self): #return
-        pass
+    def getPotency(self): 
+        return self.__potency
 
-    def setPotency(self, boost):
+    def setPotency(self, boost):            ######boost or potency???
         self.__boost = boost
 
 
