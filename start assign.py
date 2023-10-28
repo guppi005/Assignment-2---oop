@@ -33,7 +33,7 @@ class Alchemist:
         self.__ranged = ranged
         self.__necromancy = necromancy
         self.__laboratory = Laboratory(potions, herbs, catalysts) #composition     #private or public?   #None
-        self.__recipes = recipes #{}
+        self.__recipes = recipes #{}      #or inout all the recipes
 
     def getLaboratory(self):
         return self.__laboratory
@@ -45,15 +45,27 @@ class Alchemist:
         self.__recipe = recipe
         self.__laboratory.mixPotion(potionName, primaryIngredient, secondaryIngredient)
     
-    def drinkPotion(self, potion):
-        pass
+    def drinkPotion(self, potion):  # drinkPotion(potion: Potion):str     ####################
+        if potion.getStat() == "Attack":
+            self.attack += potion.calculateBoost()
+        elif potion.getStat() == "Strength":
+            self.strength += potion.calculateBoost()
+        elif potion.getStat() == "Defence":
+            self.defense += potion.calculateBoost()
+        elif potion.getStat() == "Magic":
+            self.magic += potion.calculateBoost()
+        elif potion.getStat() == "Ranging":
+            self.ranged += potion.calculateBoost()
+        elif potion.getStat() == "Necromancy":
+            self.necromancy += potion.calculateBoost()
+        return (f"I feel more {potion.getStat()}!")
 
     def collectReagent(self, reagent, amount):
         if self.__laboratory:
             self.__laboratory.addReagent(reagent, amount)
 
         else:
-            print("Alchemist has no laboratory to collect reagents")
+            print("Alchemist has no laboratory to collect reagents") 
 
     def refineReagents(self):
         if self.__laboratory:
@@ -91,6 +103,8 @@ class Laboratory:
                 self.__catalysts.append(reagent)
                 print(f"")  ###########
         print(f"Total number of reagents {len(self.__herbs)} + {len(self.__catalysts)}")
+
+
 
     def grabReagent(self, name):
         pass
@@ -216,9 +230,3 @@ class Catalyst(Reagent):
         return self.quality
 
     
-
-
-
-
-
-
