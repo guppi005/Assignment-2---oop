@@ -25,15 +25,16 @@ from abc import ABC, abstractmethod
 
 
 class Alchemist:
-    def __init__(self, attack, strength, defense, magic, ranged, necromancy, laboratory, recipes, potions, herbs, catalysts):
-        self.__attack = attack
-        self.__strength = strength
-        self.__defense = defense
-        self.__magic = magic    #0
-        self.__ranged = ranged
-        self.__necromancy = necromancy
+    def __init__(self, potions, herbs, catalysts): ###
+        self.__attack = 0
+        self.__strength = 0
+        self.__defense = 0
+        self.__magic = 0
+        self.__ranged = 0
+        self.__necromancy = 0
         self.__laboratory = Laboratory(potions, herbs, catalysts) #composition     #private or public?   #None
-        self.__recipes = recipes #{}      #or inout all the recipes
+        self.__recipes = {"Super Attack": ("Irit", "Eye of Newt"),
+                          "Super Strength":}
 
     def getLaboratory(self):
         return self.__laboratory
@@ -43,29 +44,28 @@ class Alchemist:
 
     def mixPotion(self, recipe):
         self.__recipe = recipe
-        self.__laboratory.mixPotion(potionName, primaryIngredient, secondaryIngredient)
-    
+        if recipe in self.__recipe.keys():         #return key names #getting value from dictionary
+            primaryIngredient, secondaryIngredient = self.__recipe[recipe] 
+            type, stat = recipe.split() #Retrieve the type and stat. e.g. Super Attack
+            self.__laboratory.mixPotion(recipe, type, stat, primaryIngredient, secondaryIngredient)   #name ingredients from recipe
+     
     def drinkPotion(self, potion):  # drinkPotion(potion: Potion):str     ####################
         if potion.getStat() == "Attack":
-            self.attack += potion.calculateBoost()
+            self.__attack += potion.calculateBoost()
         elif potion.getStat() == "Strength":
-            self.strength += potion.calculateBoost()
+            self.__strength += potion.calculateBoost()
         elif potion.getStat() == "Defence":
-            self.defense += potion.calculateBoost()
+            self.__defense += potion.calculateBoost()
         elif potion.getStat() == "Magic":
-            self.magic += potion.calculateBoost()
+            self.__magic += potion.calculateBoost()
         elif potion.getStat() == "Ranging":
-            self.ranged += potion.calculateBoost()
+            self.__ranged += potion.calculateBoost()
         elif potion.getStat() == "Necromancy":
-            self.necromancy += potion.calculateBoost()
+            self.__necromancy += potion.calculateBoost()
         return (f"I feel more {potion.getStat()}!")
 
     def collectReagent(self, reagent, amount):
-        if self.__laboratory:
-            self.__laboratory.addReagent(reagent, amount)
-
-        else:
-            print("Alchemist has no laboratory to collect reagents") 
+        self.__laboratory.addReagent(reagent, amount)
 
     def refineReagents(self):
         if self.__laboratory:
@@ -230,3 +230,5 @@ class Catalyst(Reagent):
         return self.quality
 
     
+
+
