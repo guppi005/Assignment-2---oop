@@ -56,6 +56,7 @@ class Alchemist:
         return self.__recipes
 
     def mixPotion(self, recipe):
+        """ Initialises attribute ('recipe') of micPotion class. Then goes through keys of recipe. """
         self.__recipe = recipe
         if recipe in self.__recipe.keys():    
             """ Returns key names by getting the value from dictionary """
@@ -123,13 +124,33 @@ class Alchemist:
 
 
 class Laboratory:
+    """Constructor method for the Laboratory class. """
     def __init__(self, potions, herbs, catalysts):
+        """Takes three parameteres which are initialised. """
         self.__potions = potions  #coming in as a list
         self.__herbs = herbs
         self.__catalysts = catalysts
         self.__reagent = 0
 
+    """
+    Method used to mix a potiona and add it to the laboratory's list of potions. 
+    Method checks if the potion is 'Super' or 'Extreme'.
+    
+    """
     def mixPotion(self, name, type, stat, primaryIngredient, secondaryIngredient):
+        """ 
+        If potion is 'Super':
+        Then a SuperPotion is created using the 'primaryIngredient' and 'secondaryIngredient'
+        accordingly to the 'name' and 'stat'.
+
+        New potion is then appended to the list of potions. 
+
+        Otherwise if potion is 'Extreme':
+        Then a ExtremePotion is created using the 'primaryIngredient' and 'secondaryIngredient'
+        accordingly to the 'name' and 'stat'.
+
+        New potion is then appended to the list of potions. 
+        """
         if type == "Super":
             potion = SuperPotion(primaryIngredient, secondaryIngredient, name, stat)  #mixing ingredients to create super potion ##herb, catalyst
             self.__potions.append(potion)
@@ -202,14 +223,16 @@ class SuperPotion(Potion):
         return round(value, 2)   
     
     def getHerb(self):
+        """ Returns the herb associated with SuperPotion. """
         return self.__herb   
     
     def getCatalyst(self): 
+        """ Returns the herb associated with SuperPotion. """
         return self.__catalyst
     
 
 class ExtremePotion(Potion):
-    """ Initialise the attributes and refers to superclass using 'super'. """
+    """ Initialises the attributes and refers to superclass using 'super'. """
     def __init__(self, reagent, potion, name, stat):
         super().__init(name, stat)
         self.__reagent = reagent #catalyst
@@ -221,59 +244,80 @@ class ExtremePotion(Potion):
         return round(value, 2) 
 
     def getReagent(self):
-        
-        """ """
+        """ Returns reagent associated with ExtremePotion. """
         return self.__reagent
 
     def getPotion(self):
+        """ Returns potions associated with ExtremePotion. """
         return self.__potion
 
 
 
 class Reagent(ABC):
+    """ Initialises the attributes and refers to abstract class using 'ABC'. """
     def __init__(self, name, potency):
         self.__name = name
         self.__potency = potency
 
-    """ Refines the reagent in where two methods exist depending on the child class"""
+    """ Refines the reagent in where two methods exist depending on the child class. """
     @abstractmethod
     def refine(self):
         pass
 
     def getName(self):
-        """ """
+        """ Returns the name of the reagent. """
         return self.__name
 
     def getPotency(self): 
+        """ Returns the potency of the reagent. """
         return self.__potency
 
-    def setPotency(self, potency):            
+    def setPotency(self, potency):    
+        """ Setter method is used to update the potency of the reagent. """        
         self.__potency = potency
 
 
 class Herb(Reagent):
+    """ Initialises the attributes and refers to superclass using 'super'. """
     def __init__(self, name, potency):
         super().__init(name, potency)
         self.__grimy = True
 
     def refine(self):
+        """ Calls the herb class method where refining leads to a herb that is not grimy. """
         self.setGrimy(False) #herb class method call. refining leads to a herb that is not grimy
 
         self.setPotency(self.getPotency * 2.5)
-        print(f"Cleaned. Potency increased to {self.getPotency()}") #
+        print(f"Cleaned. Potency increased to {self.getPotency()}") 
 
     def getGrimy(self):
+        """ Getter method used to retrieve the 'grimy' attribute value. """
         return self.__grimy
 
     def setGrimy(self, grimy):
+        """ Setter method used to update the 'grimy' attribute of the herb. """
         self.__grimy = grimy 
+
+   
 
 
 class Catalyst(Reagent):
+    """ Initialises the attributes and refers to superclass using 'super'. """
     def __init__(self, quality, name, potency):
         super().__init(name, potency)
         self.__quality = quality
 
+    """ 
+    The method of refining the catalyst depends on its' exisitng quality.
+
+    Checks if quality is less than 8.9, then increase it by 1.1. 
+    Once refining is complete, message is printed indicating the new quality value. 
+
+    Else:
+    If the quality is 8.9 or greater, then catalyst cannot be refined any further. 
+    So set quality to 10 and print message stating no more refinement. 
+     
+    """
     def refine(self):
         if self.quality < 8.9:
             self.quality += 1.1
@@ -284,6 +328,8 @@ class Catalyst(Reagent):
             print(f"The quality is {self.quality}. Catalyst cannot be refined any further")
 
     def getQuality(self):
+        """ Returns the quality of the catalyst. """
         return self.quality
 
     
+
