@@ -1,5 +1,5 @@
 '''
-File: filename.py
+File: maincode.py
 Description: A brief description of this Python module.
 Author: Bhavya Gupta
 StudentID: 110409283
@@ -18,13 +18,13 @@ def display_details():
 
 display_details()
 
-""" Imported the important method required for the abstract classes"""
+""" Imported the important method required for the abstract classes. """
 from abc import ABC, abstractmethod
 
 
 class Alchemist:
     def __init__(self, potions, herbs, catalysts): 
-        """ Initially start at 0 and can range to 100  """
+        """ Initially start at 0 and can range to 100.  """
         self.__attack = 0
         self.__strength = 0
         self.__defense = 0
@@ -71,7 +71,9 @@ class Alchemist:
             type, stat = recipe.split()
 
             """ '.mixPotion' then names all the ingredients from the recipe and mixes """
-            self.__laboratory.mixPotion(recipe, type, stat, primaryIngredient, secondaryIngredient)   #name ingredients from recipe
+            self.__laboratory.mixPotion(recipe, type, stat, primaryIngredient, secondaryIngredient)   
+        else:
+            pass   #ERROR
      
     def drinkPotion(self, potion):  
         """ 
@@ -115,8 +117,7 @@ class Alchemist:
         
         """
         if self.__laboratory:
-            self.__laboratory.refineCatalysts()
-            self.__laboratory.cleanHerbs()
+            self.__laboratory.refine()
         
         
         else: 
@@ -125,15 +126,14 @@ class Alchemist:
 
 class Laboratory:
     """Constructor method for the Laboratory class. """
-    def __init__(self, potions, herbs, catalysts):
+    def __init__(self):
         """Takes three parameteres which are initialised. """
-        self.__potions = potions  #coming in as a list
-        self.__herbs = herbs
-        self.__catalysts = catalysts
-        self.__reagent = 0
+        self.__potions = [] 
+        self.__herbs = []
+        self.__catalysts = []
 
     """
-    Method used to mix a potiona and add it to the laboratory's list of potions. 
+    Method used to mix a potion and add it to the laboratory's list of potions. 
     Method checks if the potion is 'Super' or 'Extreme'.
     
     """
@@ -152,12 +152,12 @@ class Laboratory:
         New potion is then appended to the list of potions. 
         """
         if type == "Super":
-            potion = SuperPotion(primaryIngredient, secondaryIngredient, name, stat)  #mixing ingredients to create super potion ##herb, catalyst
+            potion = SuperPotion(primaryIngredient, secondaryIngredient, name, stat)  
             self.__potions.append(potion)
 
         elif type == "Extreme":
-            potion = ExtremePotion(primaryIngredient, secondaryIngredient, name, stat)    ##catalyst, other potion
-            self.__potions.append(potion) #add potion to potion lift
+            potion = ExtremePotion(primaryIngredient, secondaryIngredient, name, stat)    
+            self.__potions.append(potion) 
 
     def addReagent(self, reagent, amount):
         """ Checks if reagent has Herb or Catalyst via 'if'/'else'. Then goes through a loop for herbs being added. """
@@ -168,14 +168,22 @@ class Laboratory:
 
         
         elif isinstance(reagent, Catalyst):
-            for i in range(amount):        #loop for catalysts being added amount num of times
+            for i in range(amount):     
                 self.__catalysts.append(reagent)
                 print(f"The ")  
     
         """ Displays the total number of reagents by adding herbs and catalysts together. """
         print(f"Total number of reagents {len(self.__herbs)} + {len(self.__catalysts)}")
 
-        
+    def refine(self): 
+        for herb in self.__herbs:
+            if herb.getGrimy():
+                herb.setGrimy(True)
+                herb.refine()
+
+        for catalyst in self.__catalysts:
+            pass#then call catalyst.refine ##catalyst
+                
 
 class Potion(ABC):
     """ 
@@ -277,15 +285,15 @@ class Reagent(ABC):
         self.__potency = potency
 
 
-class Herb(Reagent):
+class Herb(Reagent):   ##CAT WHAT INITAL VALUES OF POTENCY NEEDS TO BE, OR SHOULD WE USE TESTING 
     """ Initialises the attributes and refers to superclass using 'super'. """
     def __init__(self, name, potency):
-        super().__init(name, potency)
+        super().__init__(name, potency)
         self.__grimy = True
 
     def refine(self):
         """ Calls the herb class method where refining leads to a herb that is not grimy. """
-        self.setGrimy(False) #herb class method call. refining leads to a herb that is not grimy
+        self.setGrimy(False) 
 
         self.setPotency(self.getPotency * 2.5)
         print(f"Cleaned. Potency increased to {self.getPotency()}") 
@@ -298,13 +306,11 @@ class Herb(Reagent):
         """ Setter method used to update the 'grimy' attribute of the herb. """
         self.__grimy = grimy 
 
-   
-
 
 class Catalyst(Reagent):
     """ Initialises the attributes and refers to superclass using 'super'. """
     def __init__(self, quality, name, potency):
-        super().__init(name, potency)
+        super().__init__(name, potency)
         self.__quality = quality
 
     """ 
@@ -332,4 +338,3 @@ class Catalyst(Reagent):
         return self.quality
 
     
-
