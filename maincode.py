@@ -23,7 +23,7 @@ from abc import ABC, abstractmethod
 
 
 class Alchemist:
-    def __init__(self, potions, herbs, catalysts): 
+    def __init__(self): 
         """ Initially start at 0 and can range to 100.  """
         self.__attack = 0
         self.__strength = 0
@@ -31,7 +31,7 @@ class Alchemist:
         self.__magic = 0
         self.__ranged = 0
         self.__necromancy = 0
-        self.__laboratory = Laboratory(potions, herbs, catalysts) #composition     #private or public?   #None
+        self.__laboratory = Laboratory() 
         """ 'self.__recipes' stores a dictionary which represents the keys and values  """
         self.__recipes = {"Super Attack": ("Irit", "Eye of Newt"),
                           "Super Strength": ("Kwuarm", "Limpwurt Root"),
@@ -73,7 +73,7 @@ class Alchemist:
             """ '.mixPotion' then names all the ingredients from the recipe and mixes """
             self.__laboratory.mixPotion(recipe, type, stat, primaryIngredient, secondaryIngredient)   
         else:
-            pass   #ERROR
+            raise Exception("Error! Recipe not found!")
      
     def drinkPotion(self, potion):  
         """ 
@@ -118,7 +118,6 @@ class Alchemist:
         """
         if self.__laboratory:
             self.__laboratory.refine()
-        
         
         else: 
             print("Alchemist has no laboratory to refine reagents")
@@ -178,11 +177,19 @@ class Laboratory:
     def refine(self): 
         for herb in self.__herbs:
             if herb.getGrimy():
-                herb.setGrimy(True)
                 herb.refine()
 
         for catalyst in self.__catalysts:
             pass#then call catalyst.refine ##catalyst
+
+    def getHerbs(self):
+        return self.__herbs
+    
+    def getCatalysts(self):
+        return self.__catalysts
+
+    def getPotions(self):
+        return self.__potions       
                 
 
 class Potion(ABC):

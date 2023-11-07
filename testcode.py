@@ -22,7 +22,7 @@ class TestAlchemist(unittest.TestCase):
     unittest.main()
 
     def test_collectReagent(self):
-            alchemist = Alchemist(self.potions, self.herbs, self.catalysts)
+            alchemist = Alchemist()
 
             herb = Herb("Irit", 1.2)
             alchemist.collectReagent(herb, 3)
@@ -32,17 +32,34 @@ class TestAlchemist(unittest.TestCase):
             alchemist.collectReagent(catalyst, 3)
             self.assertEqual(len(alchemist.getLaboratory().getCatalysts()), 3)  # Check if catalysts were added
 
-    if __name__ == '__main__':
-        unittest.main()
+  
 
-    def test_collectReagent():
-        herb = Herb(name, potency)  
+    def test_collectReagent(self):
+        alchemist = Alchemist()
         name = 'Irit'      
         potency = 1.2      #potency
-        amount  = 3
-
-        catalyst = Catalyst(quality, name, catalyst)
+        herb = Herb(name, potency)  
+        alchemist.collectReagent(herb, 4)  
+        self.assertEqual(alchemist.getLaboratory().getHerbs()[-1], herb)
+        
         quality = 5
         name = 'Eye of Newt'
-        amount = 3
+        potency = 3
+        catalyst = Catalyst(quality, name, potency)   #same as above
+        
+    def test_refineReagents(self):
+        alchemist = Alchemist()
+        irit = Herb ("Irit", 3.0)
+        amount = 5
+        alchemist.collectReagent(irit, amount)   #5 is amount
+        alchemist.refineReagent()
+        herbs = alchemist.getLaboratory().getHerbs()          #get list of herbs
+        for herb in herbs:
+            self.assertEqual(herb.getgrimy(), False)
+
+
+
+if __name__ == '__main__':
+    unittest.main()  
+
 
