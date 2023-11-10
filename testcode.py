@@ -45,7 +45,6 @@ class TestAlchemist(unittest.TestCase):
         potency = 3
         catalyst = Catalyst(name, quality, potency)
         alchemist.collectReagent(catalyst, 3)
-
         """ Check if herbs were added to the laboratory. """
         self.assertEqual(len(alchemist.getLaboratory().getCatalysts()), 3) 
 
@@ -53,18 +52,15 @@ class TestAlchemist(unittest.TestCase):
         #test method 1
         """ Create instance of Alchemist class to then test its' methods. """
         alchemist = Alchemist(self.potions, self.herbs, self.catalysts)
-        
         """Create the instance of 'Herb' class and 'Catalyst' class witht the given name and potency. """
         herb = Herb ("Irit", 3.0) 
         catalyst = Catalyst(7.8, "Eye Of Newt", 3)
-
         """ Calls the 'collectreagent' method and add the herb/catalyst to the alchemist laboratory. """
         alchemist.collectReagent(herb, 1)
         alchemist.collectReagent(catalyst, 1)
 
 
         alchemist.refineReagents()
-
         """ According to the formula of Herb.refine()"""
         self.assertEqual(herb.getPotency(), 1.2 * 2.5) 
         self.assertEqual(catalyst.getQuality(), 8.9)
@@ -73,7 +69,6 @@ class TestAlchemist(unittest.TestCase):
         amount = 5
         alchemist.collectReagent('Irit', amount)  
         alchemist.refineReagent()
-        
         """ Get list of herbs. """
         herbs = alchemist.getLaboratory().getHerbs()        
         for herb in herbs:
@@ -82,7 +77,7 @@ class TestAlchemist(unittest.TestCase):
 
 
 class TestLaboratory(unittest.TestCase):
-    """ Initialize with empty lists for potions, herbs, and catalysts"""
+    """ Initialize with empty lists for potions, herbs, and catalysts. """
     def __init__(self):
         self.potions = []  
         self.herbs = []
@@ -130,7 +125,7 @@ class TestLaboratory(unittest.TestCase):
 
     class TestPotion(unittest.TestCase):
         def __init__(self):
-            pass   #not sure what to put for initialiser for abstract class
+            pass   # put for initialiser for abstract class
 
         def test_set_boost(self):
             """ Create a SuperPotion instance. """
@@ -161,12 +156,9 @@ class TestLaboratory(unittest.TestCase):
             catalyst = Catalyst(6.5, "Limpwurt Root", 2)
             super_potion = SuperPotion(herb, catalyst, "Super Strength", "Strength")
             reagent = Catalyst(7.8, "Eye of Newt", 3)
-            
-
             """ Calculate the expected boost value. """
             expectedBoost = reagent.getPotency() + (super_potion.getCatalyst().getQuality() * super_potion.getCatalyst().getPotency()) * 3.0
             expectedBoost = round(expectedBoost, 2)
-
             """Check if the calculated boost matches the expected boost. """
             self.assertEqual(extremePotion.calculateBoost(), expectedBoost)
 
@@ -177,11 +169,9 @@ class TestLaboratory(unittest.TestCase):
             
             name = "herb"
             potency = 2.5
-
             """ Set a new potency value. """
             newPotency = 3.0
             reagent.setPotency(newPotency)
-
             """Check if the new potency is set correctly. """
             self.assertEqual(reagent.getPotency(), newPotency)
 
@@ -192,16 +182,12 @@ class TestLaboratory(unittest.TestCase):
             
             name = "Irit"
             potency = 1.2
-            
             """Set the herb to be grimy. """
             herb.setGrimy(True)
-
             """ Refine the herb. """
             herb.refine()
-
             """ Check if the herb is no longer grimy. """
             self.assertFalse(herb.getGrimy())
-
             """Check if the potency is increased to the expected value. """
             expectedPotency = 1.2 * 2.5
             self.assertEqual(herb.getPotency(), expectedPotency)
@@ -215,28 +201,24 @@ class TestLaboratory(unittest.TestCase):
             quality = 7.8
             name = 'Eye of Newt'
             potency = 3
-
             """ Call the refine method to refine the catalyst. """
             catalyst.refine()
-
             """ Check if the quality is increased by 1.1 as expected. """
             expected_quality = 7.8 + 1.1
             self.assertEqual(catalyst.getQuality(), expected_quality)
-
-        """This is to test when quality is = 10 (maximum). """
+        
+        
         def test_refine(self):
             catalyst = Catalyst(quality, name, potency)
 
+            """This is to test when quality is = 10 (maximum). """
             quality = 10
             name = 'Eye of Newt'
             potency = 3
-
             """ Call the refine method. """
             catalyst.refine()
-
             """ Check if the quality remains at the maximum (10) and cannot be refined further. """
             self.assertEqual(catalyst.getQuality(), 10)
-            
             """ Check if the printed message indicates that the catalyst cannot be refined further. """
             self.assertEqual(catalyst.refine(), "The quality is 10. Catalyst cannot be refined any further. ")
 
